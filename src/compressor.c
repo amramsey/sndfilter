@@ -86,8 +86,7 @@ void sf_advancecomp(sf_compressor_state_st *state, int rate, float pregain, floa
 		delaybufsize = 1;
 	else if (delaybufsize > SF_COMPRESSOR_MAXDELAY)
 		delaybufsize = SF_COMPRESSOR_MAXDELAY;
-	if (delaybufsize > 0)
-		memset(state->delaybuf, 0, sizeof(sf_sample_st) * delaybufsize);
+        memset(state->delaybuf, 0, sizeof(sf_sample_st) * delaybufsize);
 
 	// useful values
 	float linearpregain = db2lin(pregain);
@@ -107,8 +106,8 @@ void sf_advancecomp(sf_compressor_state_st *state, int rate, float pregain, floa
 
 	// calculate knee curve parameters
 	float k = 5.0f; // initial guess
-	float kneedboffset;
-	float linearthresholdknee;
+	float kneedboffset = 0.0f;
+	float linearthresholdknee = 0.0f;
 	if (knee > 0.0f){ // if a knee exists, search for a good k value
 		float xknee = db2lin(threshold + knee);
 		float mink = 0.1f;
@@ -153,7 +152,6 @@ void sf_advancecomp(sf_compressor_state_st *state, int rate, float pregain, floa
 	state->slope                = slope;
 	state->attacksamplesinv     = attacksamplesinv;
 	state->satreleasesamplesinv = satreleasesamplesinv;
-	state->wet                  = wet;
 	state->dry                  = dry;
 	state->k                    = k;
 	state->kneedboffset         = kneedboffset;
